@@ -14,8 +14,6 @@ Quick Tips:
 
 =end
 
-require 'pry-byebug'
-
 def nil_edge_cases!(prices)
   prices[0] = nil if prices[0] == prices.max
   prices[-1] = nil if prices[-1] == prices.compact.min
