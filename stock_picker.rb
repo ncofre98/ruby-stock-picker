@@ -18,7 +18,7 @@ require 'pry-byebug'
 
 def nil_edge_cases!(prices)
   prices[0] = nil if prices[0] == prices.max
-  prices[prices.length - 1] = nil if prices[prices.length - 1] == prices.compact.min
+  prices[-1] = nil if prices[-1] == prices.compact.min
 end
 
 def stock_picker(prices)
