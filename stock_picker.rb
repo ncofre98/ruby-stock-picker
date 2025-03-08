@@ -14,12 +14,16 @@ Quick Tips:
 
 =end
 
+#require 'pry-byebug'
+
 def nil_edge_cases!(prices)
   prices[0] = nil if prices[0] == prices.max
   prices[-1] = nil if prices[-1] == prices.compact.min
 end
 
-def stock_picker(prices)
+def stock_picker(prices_arr)
+  #binding.pry
+  prices = prices_arr.dup
   nil_edge_cases!(prices)
   most_expensive_day_index = prices.index(prices.map(&:to_i).max)
   prices_per_day = prices.each_with_index.map {|price, day| {:day => day, :price => price} }
@@ -35,6 +39,21 @@ def stock_picker(prices)
   []  
 end
 
+#stock_picker([20, 21, 7, 5, 5, 18, 4, 8, 5, 17])
+
+=begin
+{:day=>6, :price=>4}
+{:day=>3, :price=>5}
+{:day=>4, :price=>5}
+{:day=>8, :price=>5}
+{:day=>2, :price=>7}
+{:day=>7, :price=>8}
+{:day=>9, :price=>17}
+{:day=>5, :price=>18}
+{:day=>0, :price=>20}
+{:day=>1, :price=>21}
+=end
+
 ########################
 # TEST PURPOSES ONLY #
 
@@ -47,7 +66,11 @@ def test_stock_picker
     { input: [5, 3, 10, 1, 6, 4, 8, 12, 2, 9], expected: [3, 7], description: "Fluctuations (find the best combination)" },
     { input: [7], expected: [], description: "Single day (cannot buy and sell)" },
     { input: [5, 10], expected: [0, 1], description: "Two days with profit" },
-    { input: [10, 5], expected: [], description: "Two days without possible profit" }
+    { input: [10, 5], expected: [], description: "Two days without possible profit" },
+    { input: [7, 5, 5, 18, 4, 8, 6, 17], expected: [1, 3], description: "Prueba Rosita 1" },
+    { input: [7, 15, 17, 5, 5, 6, 17], expected: [3, 6], description: "Prueba Rosita 2" },
+    { input: [7, 15, 17, 5, 5, 6, 16], expected: [3, 6], description: "Prueba Rosita 3" },
+    { input: [20, 21, 7, 5, 5, 18, 4, 8, 5, 17], expected: [6, 9], description: "Prueba Rosita malvada" }
   ]
 
   test_cases.each do |test|
