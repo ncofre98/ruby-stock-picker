@@ -14,45 +14,21 @@ Quick Tips:
 
 =end
 
-#require 'pry-byebug'
+def stock_picker(prices)
+  best_days = []
+  profit = 0
 
-def nil_edge_cases!(prices)
-  prices[0] = nil if prices[0] == prices.max
-  prices[-1] = nil if prices[-1] == prices.compact.min
-end
-
-def stock_picker(prices_arr)
-  #binding.pry
-  prices = prices_arr.dup
-  nil_edge_cases!(prices)
-  most_expensive_day_index = prices.index(prices.map(&:to_i).max)
-  prices_per_day = prices.each_with_index.map {|price, day| {:day => day, :price => price} }
-  prices_per_day.sort_by! { |hash| hash[:price].to_i }
-
-  prices_per_day.each do |hash|
-    if (hash[:price] != nil)
-      if (hash[:day] < most_expensive_day_index)
-        return [hash[:day], most_expensive_day_index]
+  for a in 0..prices.length - 1 do
+    for b in a+1..prices.length - 1 do
+      if (prices[a] < prices[b] && (prices[b] - prices[a]) > profit)
+        profit = prices[b] - prices[a]
+        best_days = [a, b]
       end
     end
   end
-  []  
+
+  best_days
 end
-
-#stock_picker([20, 21, 7, 5, 5, 18, 4, 8, 5, 17])
-
-=begin
-{:day=>6, :price=>4}
-{:day=>3, :price=>5}
-{:day=>4, :price=>5}
-{:day=>8, :price=>5}
-{:day=>2, :price=>7}
-{:day=>7, :price=>8}
-{:day=>9, :price=>17}
-{:day=>5, :price=>18}
-{:day=>0, :price=>20}
-{:day=>1, :price=>21}
-=end
 
 ########################
 # TEST PURPOSES ONLY #
@@ -70,7 +46,8 @@ def test_stock_picker
     { input: [7, 5, 5, 18, 4, 8, 6, 17], expected: [1, 3], description: "Prueba Rosita 1" },
     { input: [7, 15, 17, 5, 5, 6, 17], expected: [3, 6], description: "Prueba Rosita 2" },
     { input: [7, 15, 17, 5, 5, 6, 16], expected: [3, 6], description: "Prueba Rosita 3" },
-    { input: [20, 21, 7, 5, 5, 18, 4, 8, 5, 17], expected: [6, 9], description: "Prueba Rosita malvada" }
+    { input: [20, 21, 7, 5, 8, 6, 18, 4, 8, 17], expected: [3, 6], description: "Prueba Rosita 4" },
+    { input: [20, 21, 7, 5, 5, 18, 4, 8, 5, 17], expected: [3, 5], description: "Prueba Rosita malvada" }
   ]
 
   test_cases.each do |test|
